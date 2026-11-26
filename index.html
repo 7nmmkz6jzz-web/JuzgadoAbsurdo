@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La Corte · formato de comedia</title>
+<meta name="description" content="Un juzgado absurdo juzga la noticia de la semana. El acusado puede ser una maleta, una camioneta o la inteligencia artificial. El jurado es el público.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f0e4;
+    --bg-2: #efe5d2;
+    --card: #fffaf0;
+    --ink: #2a1e16;
+    --ink-2: #5e4a3b;
+    --line: #d9c8ad;
+    --rojo: #a5242b;
+    --rojo-ink: #ffffff;
+    --madera: #6b4126;
+    --oro: #b9862f;
+    --sombra: 0 1px 2px rgba(42,30,22,.08), 0 6px 20px rgba(42,30,22,.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17120e;
+      --bg-2: #201913;
+      --card: #251d16;
+      --ink: #f3e9d9;
+      --ink-2: #c3b19a;
+      --line: #3d3127;
+      --rojo: #d2454c;
+      --rojo-ink: #ffffff;
+      --madera: #c58b5e;
+      --oro: #d9a84d;
+      --sombra: 0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17120e; --bg-2: #201913; --card: #251d16; --ink: #f3e9d9; --ink-2: #c3b19a;
+    --line: #3d3127; --rojo: #d2454c; --rojo-ink: #ffffff; --madera: #c58b5e; --oro: #d9a84d;
+    --sombra: 0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.3);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 17px/1.6 Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  a { color: var(--rojo); }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 16px; }
+  h1, h2, h3 { line-height: 1.2; margin: 0; }
+  h2 {
+    font-family: "Alfa Slab One", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(24px, 4vw, 32px);
+    margin-bottom: 18px;
+  }
+  h3 { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+  p { margin: 0 0 12px; }
+  section { padding: 56px 0; border-top: 1px solid var(--line); }
+  .muted { color: var(--ink-2); }
+
+  /* Portada */
+  header.hero {
+    background:
+      repeating-linear-gradient(90deg, rgba(0,0,0,.10) 0 18px, rgba(255,255,255,.04) 18px 36px),
+      var(--rojo);
+    color: var(--rojo-ink);
+    padding: 64px 0 56px;
+    border-bottom: 8px solid var(--madera);
+  }
+  .sello {
+    display: inline-block;
+    font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+    border: 2px solid currentColor; border-radius: 999px; padding: 4px 12px; margin-bottom: 18px;
+  }
+  header.hero h1 {
+    font-family: "Alfa Slab One", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(44px, 10vw, 88px);
+    letter-spacing: .01em;
+    margin-bottom: 14px;
+  }
+  .logline { font-size: clamp(19px, 3vw, 24px); max-width: 40ch; margin: 0; font-weight: 600; }
+  .hero .nota { margin-top: 18px; opacity: .9; font-size: 15px; }
+
+  /* Rejillas */
+  .grid { display: grid; gap: 16px; }
+  .g2 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .g3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: var(--sombra);
+  }
+  .card p:last-child { margin-bottom: 0; }
+
+  /* Comparación */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .vs > div { padding: 16px 18px; border-top: 1px solid var(--line); }
+  .vs .cab { font-weight: 800; border-top: 0; background: var(--bg-2); }
+  .vs .cab.nuestra { background: var(--rojo); color: var(--rojo-ink); }
+  .vs > div:nth-child(odd) { border-right: 1px solid var(--line); }
+  .vs .nuestra-celda { font-weight: 600; }
+
+  /* Elenco */
+  .rol .quien { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--oro); margin-bottom: 4px; }
+  .rol.estrella { border: 2px solid var(--rojo); }
+
+  /* Orden del episodio */
+  ol.orden { list-style: none; counter-reset: paso; margin: 0; padding: 0; }
+  ol.orden li {
+    counter-increment: paso;
+    position: relative;
+    padding: 0 0 18px 56px;
+    min-height: 44px;
+  }
+  ol.orden li::before {
+    content: counter(paso);
+    position: absolute; left: 0; top: 0;
+    width: 40px; height: 40px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--madera); color: #fff; font-weight: 800;
+  }
+  ol.orden li strong { display: block; }
+
+  /* Casos */
+  .caso { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+  .caso a.mini { display: block; aspect-ratio: 16 / 9; background: var(--bg-2); position: relative; }
+  .caso a.mini img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+  .caso a.mini::after {
+    content: "▶"; position: absolute; right: 12px; bottom: 12px;
+    width: 40px; height: 40px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--rojo); color: #fff; font-size: 15px;
+  }
+  .caso .txt { padding: 16px 18px 18px; }
+  .caso .num { font-size: 13px; font-weight: 800; color: var(--oro); text-transform: uppercase; letter-spacing: .08em; }
+
+  /* Opciones */
+  .opcion .tag { display: inline-block; font-size: 12px; font-weight: 800; padding: 2px 10px; border-radius: 999px; background: var(--bg-2); color: var(--ink-2); margin-bottom: 10px; }
+
+  /* Contacto */
+  .contacto { background: var(--madera); color: #fff; border-top: 0; }
+  .contacto a { color: #fff; font-weight: 800; font-size: clamp(18px, 4vw, 24px); word-break: break-all; }
+  .contacto .muted { color: rgba(255,255,255,.8); }
+
+  footer { padding: 24px 0 40px; font-size: 14px; color: var(--ink-2); }
+
+  @media (max-width: 560px) {
+    .vs > div { padding: 12px; font-size: 14px; line-height: 1.5; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="sello">Formato de comedia · Humor para mayores de 14</span>
+    <h1>La Corte</h1>
+    <p class="logline">Un juzgado absurdo juzga la noticia de la semana. El acusado puede ser una maleta, una camioneta o la inteligencia artificial. Y el jurado es el público.</p>
+    <p class="nota">Ya tiene tres casos animados publicados. Buscamos comediantes que quieran llevarlo a carne y hueso.</p>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <div class="wrap">
+    <h2>La idea</h2>
+    <div class="grid g2">
+      <div class="card">
+        <h3>Cada día hay mil noticias para un chiste</h3>
+        <p>La maleta que «no cabía» en el avión, la IA que nos va a quitar el trabajo, el conductor que se hizo justicia con la camioneta. Todo el mundo ya tiene opinión. Lo que falta es un lugar donde esa pelea sea un show.</p>
+      </div>
+      <div class="card">
+        <h3>Lo convertimos en un juicio</h3>
+        <p>Hay juez, fiscal, defensor, secretaria y jurado. Cada caso tiene dos versiones que chocan, y las dos se defienden con todo. Las reglas del juicio se pueden saltar por el chiste: esta corte no existe en ningún país.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>No es otro noticiero de sátira</h2>
+    <p class="muted">Ya hay buenos noticieros que se burlan de la noticia. La Corte juega otro juego:</p>
+    <div class="vs" role="table" aria-label="Diferencias">
+      <div class="cab" role="columnheader">Noticiero satírico</div>
+      <div class="cab nuestra" role="columnheader">La Corte</div>
+
+      <div role="cell">Un presentador cuenta la noticia y se burla.</div>
+      <div class="nuestra-celda" role="cell">Dos bandos se pelean la noticia cara a cara. El chiste sale del choque, no del monólogo.</div>
+
+      <div role="cell">Habla de personas reales.</div>
+      <div class="nuestra-celda" role="cell">Se acusa al objeto, al animal o a la idea: la Maleta, la IA, la Camioneta. La historia es inventada; de la noticia solo se toma la situación.</div>
+
+      <div role="cell">El show da su opinión.</div>
+      <div class="nuestra-celda" role="cell">El público vota el veredicto. En redes, en los comentarios; en vivo, con la mano o un QR.</div>
+
+      <div role="cell">Envejece con la noticia.</div>
+      <div class="nuestra-celda" role="cell">Sin nombres ni fechas, un caso se puede ver meses después y sigue funcionando.</div>
+
+      <div role="cell">Puro chiste.</div>
+      <div class="nuestra-celda" role="cell">Cada caso deja datos ciertos, con fuente. Te ríes y sales sabiendo algo.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Un papel para cada comediante</h2>
+    <div class="grid g3">
+      <div class="card rol">
+        <div class="quien">Juez</div>
+        <h3>Honorio Mazo</h3>
+        <p>Anciano solemne que se confunde fácil. Cuando no entiende, le pega al mazo.</p>
+      </div>
+      <div class="card rol">
+        <div class="quien">Fiscal</div>
+        <h3>Dolores Castigo</h3>
+        <p>Acusa a todo el mundo, sea quien sea. Cuando la acorralan: «Ehh, sí, pero… pero…».</p>
+      </div>
+      <div class="card rol">
+        <div class="quien">Defensor</div>
+        <h3>Chepe Excusas</h3>
+        <p>Abogado de comercial de televisión. Siempre llega tarde, cada vez con una excusa nueva.</p>
+      </div>
+      <div class="card rol">
+        <div class="quien">Secretaria</div>
+        <h3>Constancia Plana</h3>
+        <p>Lee «los hechos» con voz plana detrás de su máquina de escribir. Lo más absurdo, sin pestañear.</p>
+      </div>
+      <div class="card rol estrella">
+        <div class="quien">Invitado de la semana</div>
+        <h3>El acusado</h3>
+        <p>Un comediante invitado hace de lo que se juzgue: la maleta, la IA, la camioneta. Es la puerta para rotar invitados cada semana.</p>
+      </div>
+      <div class="card rol">
+        <div class="quien">Jurado y público</div>
+        <h3>La sala</h3>
+        <p>Personajes fijos que opinan, gritan «¡Uuuuh!» y meten la cucharada. En vivo, el público de verdad es el jurado.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Cómo es un caso</h2>
+    <ol class="orden">
+      <li><strong>Se abre la sesión.</strong> El juez abre el caso y la secretaria lee los hechos, cada uno con quién lo dice.</li>
+      <li><strong>Acusa la fiscal.</strong> Contra todos: el acusado, el demandante y, si se descuida, el juez.</li>
+      <li><strong>Llega el defensor.</strong> Tarde y con una excusa nueva, a defender a quien sea.</li>
+      <li><strong>Testigos y caos.</strong> Entra el acusado, salen los testigos, se pelean cara a cara. Las reglas se rompen por el chiste.</li>
+      <li><strong>Los datos ciertos.</strong> En medio del caos cae lo que de verdad dice la ciencia, la ley o los números.</li>
+      <li><strong>El veredicto lo da el público.</strong> Se cierra con la pregunta: ¿culpable o inocente? Y la gente vota y lo defiende.</li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Ya existe: tres casos animados</h2>
+    <p class="muted">El formato ya está andando como serie animada en el canal Juzgado Absurdo. Es la prueba de que los casos, los personajes y el tono funcionan.</p>
+    <div class="grid g3">
+      <article class="card caso">
+        <a class="mini" href="https://youtu.be/AJzklfvMRK0" target="_blank" rel="noopener">
+          <img src="https://i.ytimg.com/vi/AJzklfvMRK0/hqdefault.jpg" alt="Caso 1, la maleta" loading="lazy">
+        </a>
+        <div class="txt">
+          <div class="num">Caso 1</div>
+          <h3>La maleta</h3>
+          <p>Un pasajero, una aerolínea y una maleta de mano que «no cabía». La fiscal acusa a los tres, y el testigo clave «solo mide».</p>
+        </div>
+      </article>
+      <article class="card caso">
+        <a class="mini" href="https://youtu.be/8VpIEfNdeLw" target="_blank" rel="noopener">
+          <img src="https://i.ytimg.com/vi/8VpIEfNdeLw/hqdefault.jpg" alt="Caso 2, la IA contra la Humanidad" loading="lazy">
+        </a>
+        <div class="txt">
+          <div class="num">Caso 2</div>
+          <h3>La IA contra la Humanidad</h3>
+          <p>La Humanidad demanda a una inteligencia artificial por quitar trabajos y gastar agua. Pero ella conoce a cada persona de la sala mejor que nadie.</p>
+        </div>
+      </article>
+      <article class="card caso">
+        <a class="mini" href="https://youtu.be/-GH4cG4a_nY" target="_blank" rel="noopener">
+          <img src="https://i.ytimg.com/vi/-GH4cG4a_nY/hqdefault.jpg" alt="Caso 3, la camioneta justiciera" loading="lazy">
+        </a>
+        <div class="txt">
+          <div class="num">Caso 3</div>
+          <h3>La camioneta justiciera</h3>
+          <p>Un conductor arrolla a dos ladrones que asaltaban a una señora. ¿Héroe o asesino? La camioneta también está acusada.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Formas de hacerlo</h2>
+    <p class="muted">No hay una sola. Estas son las que vemos; ustedes dicen cuál les sirve.</p>
+    <div class="grid g2">
+      <div class="card opcion">
+        <span class="tag">En vivo</span>
+        <h3>La Corte en bar o teatro</h3>
+        <p>Un caso por noche, con el público como jurado: votan al final con la mano o con un QR. El invitado de la semana hace de acusado. Se graba y se corta para redes.</p>
+      </div>
+      <div class="card opcion">
+        <span class="tag">Grabado</span>
+        <h3>Serie en un set sencillo</h3>
+        <p>Estrado, dos mesas y una baranda. Un caso por semana de 8 a 10 minutos para YouTube y Facebook, más los clips cortos.</p>
+      </div>
+      <div class="card opcion">
+        <span class="tag">Stream o podcast</span>
+        <h3>El caso de la semana</h3>
+        <p>La gente manda la noticia y el elenco la juzga en vivo, improvisando. El chat vota el veredicto.</p>
+      </div>
+      <div class="card opcion">
+        <span class="tag">Redes</span>
+        <h3>Clips de 15 a 30 segundos</h3>
+        <p>Cada caso da varios chistes completos para Shorts, Reels y TikTok, y todos llevan al caso completo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Lo que hay sobre la mesa</h2>
+    <div class="grid g2">
+      <div class="card">
+        <h3>Lo que ya está</h3>
+        <p>El formato, el elenco de personajes con su forma de ser, tres casos escritos y publicados, y un canal animado andando.</p>
+      </div>
+      <div class="card">
+        <h3>Lo que buscamos</h3>
+        <p>Comediantes que quieran darle cuerpo y voz: hacer un piloto, en vivo o grabado, y ver si pega. Lo demás se habla.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contacto">
+  <div class="wrap">
+    <h2>¿Les suena?</h2>
+    <p class="muted">Escríbannos y armamos el primer caso juntos.</p>
+    <!-- CAMBIAR: pon aquí el correo del proyecto, en los dos sitios (href y texto) -->
+    <p><a href="mailto:CORREO@DEL-PROYECTO.com">CORREO@DEL-PROYECTO.com</a></p>
+    <p class="muted">Canal animado: <a href="https://www.youtube.com/@JuzgadoAbsurdo" target="_blank" rel="noopener" style="font-size:inherit">youtube.com/@JuzgadoAbsurdo</a></p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">La Corte · formato de comedia. Humor para mayores de 14. Los casos son ficción: personajes, empresas y hechos del juicio son inventados.</div>
+</footer>
+
+</body>
+</html>
